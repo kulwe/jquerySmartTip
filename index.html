@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>智能提示表格</title>
+</head>
+<body>
+<input class="jq_smart_table" type="text" value="" />
+<button>点击</button>
+<table id="table1"></table>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/tool.lq.js"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/jquery.indexedDB.js"></script>
+<script type="text/javascript">
+$(function(){
+    //智能提醒表格
+    var jqIDB=new JqIDB();
+    var columns=['specNum','content','price','count'];
+    var oTableSetting={
+        sDom: "rtip",
+        bDestroy:true,
+        aaData:[],
+        aoColumns: [
+            { "sTitle": "款号", "sClass": "center" },
+            { "sTitle": "内容", "sClass": "center" },
+            { "sTitle": "单价" },
+            { "sTitle": "库存", "sClass": "center" }
+        ],
+        oLanguage:{
+            sZeroRecords:'暂无此款号',
+            sInfo: "共找到 _TOTAL_ 条记录",
+            sInfoEmpty: "",
+            sInfoFiltered: "",
+            sEmptyTable:'暂无此款号'
+        },
+        fnDrawCallback:function(oTabSet){
+            toolLq.log('rows',oTabSet);
+        },
+    "bLengthChange": true
+    };
+    var oTable=$('#table1').dataTable(oTableSetting);
+    var oTableStatus={
+        isShow:false,
+        fixRows:10
+    };
+    var history={value:null,ok:true};//缓存的历史记录，减少一次查询
+    //搜索事件绑定
+    $(document).delegate('.jq_smart_table','keyup',function(){
+        if(this.value.length==2){//达到指定搜索长度后从数据库中查询记录
+            if(this.value==history.value){//若与上次记录相同，则不再查询
+                oTable.fnFilter(this.value,0);
+                return;
+            }
+            history.value=this.value;
+            jqIDB.findData('store',this.value,function(value){
+                return toolLq.objToRuleArr(value,columns);
+            },function(rst){
+                oTableSetting.aaData=rst;
+                oTable=$('#table1').dataTable(oTableSetting);
+                oTableStatus.isShow=true;
+                $(document).bind('keydown.jqSmartTable',function(e){
+                    if(e.keyCode==40){
+                        var count=oTable.fnSettings().fnRecordsTotal();
+
+                        toolLq.log('get',oTable.fnSettings().fnRecordsTotal());
+                    }
+                });
+            });
+        }
+        if(this.value.length>2){//使用表格自带的搜索
+            oTable.fnFilter(this.value,0);
+        }
+    })
+    //按上下键时在表格中移动行
+    .delegate('.jq_smart_table','keydown',function(e){
+        if(e.keyCode==40&&oTableStatus.isShow){//按下方向键
+
+            var jqTr=oTable.find('tbody tr');
+
+            toolLq.log('oTable',jqTr);
+        }
+    })
+    .delegate('.jq_smart_table','blur',function(){
+        toolLq.log('取消');
+        oTableStatus.isShow=false;
+    });
+});
+</script>
+</body>
+</html>

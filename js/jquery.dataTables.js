@@ -1376,8 +1376,7 @@
 				}
 			}
 		}
-		
-		
+
 		/**
 		 * Insert the required TR nodes into the table for display
 		 *  @param {object} oSettings dataTables settings object
@@ -1453,15 +1452,15 @@
 					var nRow = aoData.nTr;
 					
 					/* Remove the old striping classes and then add the new one */
-					if ( iStripes !== 0 )
-					{
-						var sStripe = oSettings.asStripeClasses[ iRowCount % iStripes ];
-						if ( aoData._sRowStripe != sStripe )
-						{
-							$(nRow).removeClass( aoData._sRowStripe ).addClass( sStripe );
-							aoData._sRowStripe = sStripe;
-						}
-					}
+                    if ( iStripes !== 0 )
+                    {
+                        var sStripe = oSettings.asStripeClasses[ iRowCount % iStripes ];
+                        if ( aoData._sRowStripe != sStripe )
+                        {
+                            $(nRow).removeClass( aoData._sRowStripe ).addClass( sStripe );
+                            aoData._sRowStripe = sStripe;
+                        }
+                    }
 					
 					/* Row callback functions - might want to manipulate the row */
 					_fnCallbackFire( oSettings, 'aoRowCallback', null, 
@@ -1553,8 +1552,9 @@
 				{
 					nAddFrag.appendChild( anRows[i] );
 				}
-				
 				oSettings.nTBody.appendChild( nAddFrag );
+                if(oSettings.bFillEmpty)$(oSettings.nTBody).append(_m_fillEmptyRow(iLen,oSettings));
+
 				if ( nBodyPar !== null )
 				{
 					nBodyPar.appendChild( oSettings.nTBody );
@@ -1578,7 +1578,22 @@
 				}
 			}
 		}
-		
+        /*添加空白行，用于保持表格高度不变化
+         * by kule 2012-10-21
+         * */
+        function _m_fillEmptyRow(rows,oSettings){
+            var rst=[],sStrip;
+            var iStripes = oSettings.asStripeClasses.length;
+            var tr=[(new Array(_fnVisbleColumns(oSettings)+1)).join('<td></td>'),'</tr>'].join('');//td的class暂时未添加
+            for(var i=rows,iLen=oSettings._iDisplayLength;i<iLen;i++){
+                if(iStripes!==0){
+                    rst.push('<tr class="'+oSettings.asStripeClasses[rows++ % iStripes]+' js_empty">',tr);
+                }else{
+                    rst.push('<tr class="js_empty">',tr);
+                }
+            }
+            return rst.join('');
+        }
 		
 		/**
 		 * Redraw the table - taking account of the various features which are enabled
@@ -6448,7 +6463,6 @@
 			}
 			
 			oInit = _fnExtend( $.extend(true, {}, DataTable.defaults), oInit );
-			
 			// Map the initialisation options onto the settings object
 			_fnMap( oSettings.oFeatures, oInit, "bPaginate" );
 			_fnMap( oSettings.oFeatures, oInit, "bLengthChange" );
@@ -6482,6 +6496,7 @@
 			_fnMap( oSettings, oInit, "sCookiePrefix" );
 			_fnMap( oSettings, oInit, "sDom" );
 			_fnMap( oSettings, oInit, "bSortCellsTop" );
+            _fnMap( oSettings, oInit, "bFillEmpty" );
 			_fnMap( oSettings, oInit, "iTabIndex" );
 			_fnMap( oSettings, oInit, "oSearch", "oPreviousSearch" );
 			_fnMap( oSettings, oInit, "aoSearchCols", "aoPreSearchCols" );
@@ -7967,7 +7982,7 @@
 		 *    } );
 		 */
 		"aLengthMenu": [ 10, 25, 50, 100 ],
-	
+
 	
 		/**
 		 * The aoColumns option in the initialisation parameter allows you to define
@@ -8130,7 +8145,9 @@
 		 *    } );
 		 */
 		"bFilter": true,
-	
+
+        //是否启用空白行填充
+        "bFillEmpty":true,
 	
 		/**
 		 * Enable or disable the table information display. This shows information 

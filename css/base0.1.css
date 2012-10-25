@@ -1,0 +1,145 @@
+@charset "utf-8";
+/*版本升至0.2
+新增a:focus{outline: none}*/
+/****	Reset	****/
+body {
+	text-align: center;
+	font-family: "宋体";
+	font-size: 12px;
+	line-height: 1.4;
+	padding: 0;
+	margin:0 auto;
+	color: #615b56;
+}
+div,span,ul,ol,dl,p,li,dd,input,br,h1,h2,h3,h4,
+h5,h6,form,table,th,td,textarea{
+	margin: 0;
+	padding: 0;
+    word-break:break-all;/* 防止英文单词不换行，撑破容器 */
+    word-wrap:break-word;/* 防止英文单词不换行，撑破容器 */
+}
+ul,li {
+	list-style:none outside none;
+}
+a img {
+	border:0;
+}
+/*IE下a虚线设置<a herf="#" hidefocus="true"></a>*/
+:focus,
+a:focus{
+    outline:none;
+}
+/*firefox去除按钮虚线*/
+input::-moz-focus-inner,
+button::-moz-focus-inner {
+    border: 0;
+}
+table{
+    border:0;
+    border-collapse:collapse;
+    table-layout: fixed;
+}
+th{
+    text-align: inherit;/* IE8 BUG修正 */
+}
+input,textarea,select{
+    vertical-align:middle;/* 默认让input元素都中线对齐 */
+    resize:none;
+    outline:none;
+}
+/****	BasicElements	****/
+a,a:visited {
+	color: #454545;
+	text-decoration: none;
+	cursor:pointer;
+}
+a:hover,
+.a_blue1_lq a:hover {
+	color: #385679;
+	text-decoration:none;
+	cursor:pointer;
+}
+/****	GenericClasses	****/
+.clear_lq {
+	clear: both;
+	height:0;
+    line-height:0;
+}
+.hidden1_lq {
+	display: none;
+}
+/*保留布局隐藏，可提高性能*/
+.hidden2_lq{
+    visibility: hidden;
+}
+/*使用important提高权重*/
+.hidden3_lq{
+    display: none!important;
+}
+.fr_lq{
+    float: right;
+}
+/* Global Generic Class */
+/* 图片居中框 */
+.img_box_lq {
+    display:table-cell;
+    vertical-align:middle;
+    text-align:center;
+    /* 针对IE的Hack */
+    width:100px;
+    height:100px;
+    +line-height:100px;/* IE7 矫正*/
+    _font-size:87.5px;/*IE6矫正，为高度*0.875*/
+    _font-family:Arial;/*防止Hack失效*/
+    border:solid 1px #bebebe;
+    overflow: hidden;
+}
+.img_box_lq img {
+    vertical-align:middle;
+    /*IE6完美解决，需要删除img_box中的hack*/
+    /* _margin-top:expression((100-this.height)/2);*/
+}
+/* checkbox垂直对齐label */
+.checkbox_wrapper_lq{
+    vertical-align: middle;
+}
+.checkbox_wrapper_lq input{
+    vertical-align: middle;
+    margin-top:-3px;
+    height:22px;
+    line-height: 18px;/*IEAll Bug*/
+}
+.inblock_layout1_lq{
+    letter-spacing:-3px;/*去除inline-block之间的空格*/
+    font-size:0;/*去除inline-block之间的空格，Opera修正*/
+    font-family: Arial;
+}
+.inblock_layout2_lq{
+    font-size:12px;
+    letter-spacing:0;
+    font-family:"宋体";
+}
+/* .page_box1_lq */
+.page_box1_lq{
+    padding:23px 0 10px 0;
+    clear:both;
+    letter-spacing:-10px;/*去除inline-block之间的空格*/
+    font-size:0;/*去除inline-block之间的空格，Opera修正*/
+    font-family: Arial;
+}
+.page_box1_lq a{
+    display:inline-block;
+    width:50px;
+    height:22px;
+    line-height: 22px;
+    background:#e3e6ea;
+    font-size:12px;
+    letter-spacing:0;
+    font-family:"宋体";
+}
+/*inline-block兼容IE6,7方法*/
+.inb_lq{
+    display: inline-block;
+    +display:inline;/*与zoom:1连用，解决IE6/7不支持inline-block*/
+    +zoom:1;/*与zoom:1连用，解决IE6/7不支持inline-block*/
+}

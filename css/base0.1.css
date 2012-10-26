@@ -65,18 +65,18 @@ a:hover,
 	height:0;
     line-height:0;
 }
-.hidden1_lq {
+.hide1{
 	display: none;
 }
 /*保留布局隐藏，可提高性能*/
-.hidden2_lq{
+.hide2{
     visibility: hidden;
 }
 /*使用important提高权重*/
-.hidden3_lq{
+.hide3{
     display: none!important;
 }
-.fr_lq{
+.fr{
     float: right;
 }
 /* Global Generic Class */

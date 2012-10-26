@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title></title>
+</head>
+<body>
+<button id="btn1">点击</button>
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/tool.lq.js"></script>
+<script type="text/javascript">
+    var simp1;
+    $('#btn1').bind('click',function(){
+        $('body').unbind('click',simp1).bind('click',simp1);
+
+    });
+    simp1=function(){
+        toolLq.log('多次绑定');
+    };
+</script>
+</body>
+
+</html>

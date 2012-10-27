@@ -194,6 +194,7 @@ var JqSmartTable=function(setting){
     $.extend(true,this,options,setting);
     this.jqIDB=null;
     this.oTable=null;
+    this.oInput=null;
     this._options={
         history:null,
         selIndex:-1,
@@ -206,17 +207,12 @@ var JqSmartTable=function(setting){
     //初始化
     JqSmartTable.prototype.init=function(){
         this.jqIDB=new JqIDB();
-        this.oTable=$(this.sTableSetting.jqSel).dataTable(this.oTableSetting);
-        this._options.domTable=this.oTable.fnSettings().nTableWrapper;
-        $(this._options.domTable).on('mouseenter',{This:this},function(){
-            e.data.This._options.close=false;
-        }).on('mouseleave',{This:this},function(){
-            e.data.This._options.close=true;
-        });
+        refreshTable([],this);
     };
     //关闭提示
     JqSmartTable.prototype.close=function(){
         if(!this._options.close)return;
+        this.fnFocus(this,e,true);
         $(this._options.domTable).addClass('hide1');
     };
     //打开提示
@@ -246,10 +242,7 @@ var JqSmartTable=function(setting){
             jqSmT.jqIDB.findData('store',this.value,function(value){
                 return toolLq.objToRuleArr(value,jqSmT.sTableSetting.columns);
             },function(rst){
-                jqSmT.oTableSetting.aaData=rst;
-                jqSmT._options.selIndex=-1;
-                jqSmT.oTable=$(jqSmT.sTableSetting.jqSel).dataTable(jqSmT.oTableSetting);
-                jqSmT._options.domTable=jqSmT.oTable.fnSettings().nTableWrapper;
+                refreshTable(rst,jqSmT);
             });
         }
         if(this.value.length>2){//使用表格自带的搜索
@@ -263,12 +256,12 @@ var JqSmartTable=function(setting){
              $('body').unbind('keydown',selSmartTTr);
              return;
          }
+        jqSmT.oInput=this;
         $('body').off('keydown',selSmartTTr).on('keydown',{jqSmT:jqSmT,This:this},selSmartTTr);
     };
     //外部绑定事件的fnBlur接口
     JqSmartTable.prototype.fnBlur=function(jqSmT,e){
         jqSmT.close();
-        jqSmT.fnFocus(jqSmT,e,true);
     };
 
     //事件处理函数
@@ -304,8 +297,30 @@ var JqSmartTable=function(setting){
                 selSmartTTr({keyCode:40,data:{jqSmT:e.data.jqSmT,This:e.data.This}});
                 return;
             }
-            jqTr.addClass('cur_1').siblings('.cur_1').removeClass('cur_1');//高亮当前行
-            This.value=jqTr.children('td:first').text();
+            fillInput(jqTr,This);
         }
+    }
+    //重新生成oTable
+    function refreshTable(rst,jqSmT){
+        jqSmT.oTableSetting.aaData=rst;
+        jqSmT.oTable=$(jqSmT.sTableSetting.jqSel).dataTable(jqSmT.oTableSetting);
+        jqSmT._options.history=null;
+        jqSmT._options.selIndex=-1;
+        jqSmT._options.domTable=jqSmT.oTable.fnSettings().nTableWrapper;
+        $(jqSmT._options.domTable).on('mouseenter',{options:jqSmT._options},function(e){
+            e.data.options.close=false;
+        }).on('mouseleave',{options:jqSmT._options},function(e){
+            e.data.options.close=true;
+        }).on('click','tbody tr',{jqSmT:jqSmT},function(e){
+            var jqSmT=e.data.jqSmT;
+            var jqTr=$(this);
+            fillInput(jqTr,jqSmT.oInput);
+            jqSmT._options.selIndex=jqTr.prevAll().length;
+        });
+    }
+    //高亮行并写入input中
+    function fillInput(jqTr,input){
+        jqTr.addClass('cur_1').siblings('.cur_1').removeClass('cur_1');//高亮当前行
+        input.value=jqTr.children('td:first').text()||input.value;
     }
 })(JqSmartTable);

@@ -30,10 +30,8 @@ $(function(){
     $('body').delegate('.jq_smart_table','keyup',function(e){
         jqSmartTable.fnKeyUp.call(this,jqSmartTable,e);
     }).delegate('.jq_smart_table','focus',function(e){
-        toolLq.log('focus');
         jqSmartTable.fnFocus.call(this,jqSmartTable,e);
     }).delegate('.jq_smart_table','blur',function(e){
-        toolLq.log('blur');
         jqSmartTable.fnBlur.call(this,jqSmartTable,e);
     });
 });

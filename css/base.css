@@ -1,0 +1,45 @@
+/*
+ *安娜秀依
+ *2012-10-7
+*/
+
+/*重置和全局使用的基本定义*/
+body,p,ul,ol,h1,h2,h3,h4,h5,h6{margin:0;}
+form,dl{ margin-top:0; margin-bottom:0;}
+ul,ol{padding-left:0;list-style-type: none;}
+dd{ margin-left:0;}
+em,var,cite,i{font-style:normal;}
+s,a{text-decoration:none;}
+img,iframe{border:none;font-size:1px;}
+textarea,select,button,.textinput input,.formbtns input,.submit{border:0;outline:0;background:transparent;}
+input[type='checkbox'],input[type='radio']{margin-left:4px; margin-right:4px;}
+blockquote,q{quotes:none; margin:0;}
+a:focus,input:focus,textarea:focus{outline:none;}
+table{border-collapse:collapse;border-spacing:0;}
+
+/*设置默认样式*/
+body{font: 12px/1.4 tahoma, arial, sans-serif;}
+
+/*---------------通用样式------------------------------*/
+.clear{clear: both;height: 0;line-height: 0;font-size: 0;}/*为了不让ie具有一定的空间，加上后面三个属性*/
+.clearfix:before,.clearfix:after{content:""; display:table;}.clearfix:after{clear:both;}.clearfix{*zoom:1;}
+.none{display:none;}
+.hidden{visibility:hidden;}
+.fl{float:left;}.fr{float:right;}.unfloat{float:none;}
+.tl{ text-align:left;}.tc{ text-align:center;}.tr{ text-align:right;}
+.mt4{margin-top:4px;}.mt6{margin-top:6px;}.mt8{margin-top:8px;}.mt10{margin-top:10px;}.mt12{margin-top:12px;}.mt16{margin-top:16px;}.mt20{margin-top:20px;}.mb4{margin-bottom:4px;}.mb6{margin-bottom:6px;}.mb8{margin-bottom:8px;}.mb10{margin-bottom:10px;}.mb12{margin-bottom:12px;}.mb16{margin-bottom:16px;}.mb20{margin-bottom:20px;}
+.cite a{ padding:0 4px; cursor:pointer;}
+.cite a:hover{ text-decoration:underline;}
+.pointer{cursor:pointer;}
+
+/*----------------------------------inline-block布局----------------------------*/
+.dib {display: inline-block;*display:inline;*zoom:1;}
+.dib-wrap {font-size:0;/* 所有浏览器 */letter-spacing:-5px;/* Safari 等不支持字体大小为 0 的浏览器 */*letter-spacing:normal;word-spacing:-1px;/* IE6、7 */}
+.dib-wrap .dib{font-size: 12px;letter-spacing: normal;word-spacing: normal;vertical-align: top;}
+
+/*css三角*/
+.A{font-size:0;width:0;height:0;line-height:0;display:inline-block;*zoom:1;vertical-align:top;border-width:80px;border-style:solid;_border-style:dotted;color:#060;/*三角的颜色自行指定*/}
+.TA{border-top:none;border-bottom-style: solid;border-right-color: transparent!important;border-left-color: transparent!important;}
+.RA{border-right: none;border-left-style: solid;border-top-color: transparent;border-bottom-color: transparent;}
+.BA{border-bottom: none;border-top-style: solid;border-left-color: transparent;border-right-color: transparent;}
+.LA{border-left: none;border-right-style: solid;border-top-color: transparent;border-bottom-color: transparent;}
